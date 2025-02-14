@@ -68,3 +68,39 @@ export const deleteEmployee=async(request:Request,response:Response)=>{
      
 }
 
+
+export const filterEmployee=async(request:Request,response:Response)=>{
+    try {
+       const{name,salary,roll,minsalary,maxsalary,page="1",limit="5"}=request.body 
+       let filter:any={}
+       
+       if(name) filter.name={$regexp:name,$options:"i"};
+       if(salary) filter.salary=Number(salary);
+       if(roll) filter.roll=roll;
+       if(minsalary && maxsalary){
+        filter.salary={$gte:Number(minsalary),$lte:Number(maxsalary)}
+       }
+
+       //pagination
+
+       const pageNumber=parseInt(page as string)|| 1 ;
+       const limitNumber=parseInt(limit as string)|| 5 ;
+       const skip=(pageNumber -1) * limitNumber; 
+       
+       const employee=await Employee.find(filter).skip(skip).limit(limitNumber)
+       const totalEmployees=await Employee.countDocuments(filter) 
+       
+       response.status(200).json({
+        total:totalEmployees,
+        page:pageNumber,
+        totalPages:Math.ceil(totalEmployees/limitNumber) ,
+        data:employee
+       })
+
+    } catch (error) {
+        console.error("can not fetch employee:", error);
+        return response.status(500).json({ message: "Internal Server Error" });
+
+    }
+     
+}
