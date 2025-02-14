@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import mongoose  from "mongoose";
+import employeeRoutes from "./routes/index"
 // Create a new express application instance
 const app = express();
 
@@ -11,6 +12,7 @@ app.get("/", (req: Request, res: Response) => {
     res.json({ message: "Welcome to the Express + TypeScript Server!" });
 });
 
+app.use(express.json())
 //Database connect
 const MONGO_URL="mongodb://localhost:27017";
 
@@ -23,6 +25,8 @@ mongoose.connect(MONGO_URL,{
     console.log(error);
     
 })
+
+app.use('/api/v1/',employeeRoutes)
 
 // Start the Express server
 app.listen(port, () => {

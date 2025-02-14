@@ -1,26 +1,34 @@
-import mongoose from "mongoose"
+import mongoose,{Document} from 'mongoose'
 
-const employeSchema=new mongoose.Schema({
-        name:{
-            type:String,
-            required:true
-        },
-        roll:{
-            type:String,
-            required:true
-        },
-        salary:{
-            type:String,
-            required:true
-        },
-        doj:{
-            type:Date,
-            required:true
-        },
-        contact:{
-            type:String,
-            required:true
-        }
+interface IEmployee extends Document{
+    name:String,
+    salary:Number,
+    doj:Date,
+    contact:Number,
+    roll:String
+}
+
+const EmployeeSchema=new mongoose.Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    salary:{
+        type:Number,
+        required:true
+    },
+    roll:{
+        type:String,
+        required:true
+    },
+    contact:{
+        type:Number,
+        required:true
+    },
+    doj:{
+        type:Date,
+        required:true
+    }
 })
 
-module.exports=mongoose.model("employee",employeSchema)
+export default mongoose.model<IEmployee>("employee", EmployeeSchema)
