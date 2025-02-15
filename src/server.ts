@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import mongoose  from "mongoose";
 import employeeRoutes from "./routes/index"
+import cors from "cors"
 // Create a new express application instance
 const app = express();
 
@@ -9,10 +10,11 @@ const port = process.env.PORT || 3000;
 
 // Define the root path with a greeting message
 app.get("/", (req: Request, res: Response) => {
-    res.json({ message: "Welcome to the Express + TypeScript Server!" });
+    Response.json({ message: "Welcome to the Express + TypeScript Server!" });
 });
 
 app.use(express.json())
+app.use(cors())
 //Database connect
 const MONGO_URL="mongodb://localhost:27017";
 
